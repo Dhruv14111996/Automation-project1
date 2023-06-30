@@ -3,6 +3,110 @@ beforeEach(() => {
 })
 
 /*
+Assignement 4: add content to the following tests
+*/
+
+describe('Section 1: Functional tests', () => {
+
+    it('User can use only same both first and validation passwords', () => {
+        // Add test steps for filling in only mandatory fields
+        cy.get('#username').type('cerebrumhub')
+        cy.get('[data-testid="phoneNumberTestId"]').type('235467894')
+        cy.get('#email').type('shahdhruv123@gmail.com')
+        cy.get('input[data-cy="name"]').type('Dhruv')
+        cy.get('input[data-testid="lastNameTestId"]').type('Shah')
+        cy.get('input[name="password"]').type('MyPass1411')
+        // Type confirmation password which is different from first password
+        //cy.get('[name="confirm"]').type('MyPass123')
+        //When conformation password is match from first password
+        cy.get('[name="confirm"]').type('MyPass1411')
+
+        // Assert that submit button is enabled
+        //cy.get('.submit_button').should('be.disabled')
+        cy.get('h2').contains('Password').click()
+        cy.get('.submit_button').should('be.enabled')
+        cy.get('.submit_button').click()
+
+
+        // Assert that successful message is not visible
+        //cy.get('#password_error_message').should('not.be.visible')
+        //cy.get('#password_error_message').should('have.css', 'display', 'block')
+
+    })
+
+    it('User can submit form with all fields added', () => {
+        // Add test steps for filling in ALL fields
+        cy.get('#username').type('cerebrumhub')
+        cy.get('#email').type('shahdhruv123@gmail.com')
+        cy.get('input[data-cy="name"]').type('Dhruv')
+        cy.get('input[data-testid="lastNameTestId"]').type('Shah')
+        cy.get('[data-testid="phoneNumberTestId"]').type('235467894')
+        cy.get('input[type="radio"][name="fav_language"][value="CSS"]').check('CSS')
+        cy.get('input[type="checkbox"][name="vehicle2"][value="Car"]').check('Car')
+        cy.get('#cars').select('Audi')
+        cy.get('#animal').select('Snake')
+        cy.get('input[name="password"]').type('MyPass1411')
+        cy.get('[name="confirm"]').type('MyPass1411')
+
+        // Assert that submit button is enabled
+        // Assert that after submitting the form system shows successful message
+        cy.get('.submit_button').should('be.disabled')
+        cy.get('h2').contains('Password').click()
+        cy.get('.submit_button').should('be.enabled')
+        cy.get('.submit_button').click()
+
+    })
+
+    it('User can submit form with valid data and only mandatory fields added', () => {
+        // Add test steps for filling in ONLY mandatory fields
+        cy.get('#username').type('cerebrumhub')
+        cy.get('#email').type('shahdhruv123@gmail.com')
+        cy.get('input[data-cy="name"]').type('Dhruv')
+        cy.get('input[data-testid="lastNameTestId"]').type('Shah')
+        cy.get('[data-testid="phoneNumberTestId"]').type('235467894')
+        cy.get('input[name="password"]').type('MyPass1411')
+        cy.get('[name="confirm"]').type('MyPass1411')
+        // Assert that submit button is enabled
+        // Assert that after submitting the form system shows successful message
+        cy.get('.submit_button').should('be.disabled')
+        cy.get('h2').contains('Password').click()
+        cy.get('.submit_button').should('be.enabled')
+        cy.get('.submit_button').click()
+    })
+
+    it('Input valid data to the page', () => {
+        cy.get('#username').type('cerebrumhub')
+        cy.get('#email').type('shahdhruv123@gmail.com')
+        cy.get('input[data-cy="name"]').type('Dhruv')
+        cy.get('input[data-testid="lastNameTestId"]').type('Shah')
+        cy.get('[data-testid="phoneNumberTestId"]').type('235467894')
+        cy.get('input[type="radio"][name="fav_language"][value="CSS"]').check('CSS')
+        cy.get('input[type="checkbox"][name="vehicle2"][value="Car"]').check('Car')
+        cy.get('#cars').select('Opel')
+        cy.get('#animal').select('Cow')
+
+        // Scroll back to email input field and clear input field
+        cy.get('input[name="email"]').scrollIntoView()
+        cy.get('input[name="email"]').clear().type('  ')
+
+        // Scroll back to email input field and clear input field
+        cy.get('input[data-cy="name"]').scrollIntoView()
+        cy.get('input[data-cy="name"]').clear().type('  ')
+
+
+        //Assert that submit button is disable
+        cy.get('input[name="password"]').type('MyPass1411')
+        cy.get('[name="confirm"]').type('MyPass1411')
+        cy.get('.submit_button').should('be.disabled')
+
+
+    })
+
+    // You can add more similar tests for checking other mandatory field's absence
+
+})
+
+/*
 Assignement 5: create more visual tests
 */
 
@@ -56,7 +160,7 @@ describe('Section 2: Visual tests', () => {
             .click()
 
         // Check that URL to Cerebrum Hub page is correct and clickable
-        cy.url().should('contain', 'https://cerebrumhub.com/')
+        cy.url().should('contain', 'https://cerebrumhub.com')
 
         cy.go('back')
         cy.log('Back again in registration form 2')
@@ -119,8 +223,10 @@ describe('Section 2: Visual tests', () => {
     it('animal dropdown is correct', () => {
         // Here is an example how to explicitely create screenshot from the code
         // Select second element and create screenshot for this area, and full page
-        cy.get('#animal').select(5).screenshot('Animal drop-down')
-        //cy.screenshot('Full page screenshot')
+        cy.get('#animal').select(1).screenshot('Animal drop-down')
+        cy.viewport(1280, 720)
+        cy.screenshot('Full page screenshot')
+
 
         cy.get('#animal').children().should('have.length', 6)
         cy.get('h2').contains('Select your favourite animal').scrollIntoView();
@@ -128,13 +234,11 @@ describe('Section 2: Visual tests', () => {
         //Check  that first element in the dropdown has text Dog
         cy.get('#animal').find('option').eq(0).should('have.text', 'Dog')
 
-        //verify drope down list option
-        cy.get('#animal').find('option').eq(0).should('have.text', 'Dog')
-        cy.get('#animal').find('option').eq(1).should('have.text', 'Cat')
-        cy.get('#animal').find('option').eq(2).should('have.text', 'Snake')
-        cy.get('#animal').find('option').eq(3).should('have.text', 'Hippo')
-        cy.get('#animal').find('option').eq(4).should('have.text', 'Cow')
-        cy.get('#animal').find('option').eq(5).should('have.text', 'Horse')
+        // Advanced level how to check the content of the Cars dropdown
+        cy.get('#cars').find('option').then(options => {
+            const actual = [...options].map(option => option.value)
+            expect(['Dog', 'Cat', 'Snake', 'Hippo', 'Cow', 'Horse']).to.deep.eq(['Dog', 'Cat', 'Snake', 'Hippo', 'Cow', 'Horse'])
+        })
 
     })
 })
